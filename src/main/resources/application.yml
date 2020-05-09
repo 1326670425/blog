@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    platform: mysql
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://121.36.26.71:3306/blog?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=true
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      min-idle: 5
+      initial-size: 1
+      max-active: 10
+      max-wait: 5000
+      validation-query: select 1
+      web-stat-filter:
+        enabled: true
+        url-pattern: "/*"
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+      stat-view-servlet:
+        url-pattern: /druid/*
+        enabled: true
+        login-username: admin
+        login-password: admin
+      filters: stat,wall,slf4j
