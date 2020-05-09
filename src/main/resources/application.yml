@@ -25,6 +25,7 @@ spring:
 
 mybatis-plus:
   mapper-locations: classpath*:mapper/*.xml
+  type-enums-package: cn.edu.hust.grid.cgcl.model.enums
   global-config:
     db-config:
       logic-delete-field: deleted

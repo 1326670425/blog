@@ -1,6 +1,8 @@
 package cn.novalue.blog.model.entity;
 
 import java.io.Serializable;
+
+import cn.novalue.blog.model.enums.GenderEnum;
 import lombok.Data;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -23,7 +25,7 @@ public class User extends BaseEntity implements Serializable {
     private String avatar;
     // 性别    
     @TableField("gender")
-    private Integer gender;
+    private GenderEnum gender;
     // 邮箱    
     @TableField("email")
     private String email;
