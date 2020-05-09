@@ -1,8 +1,9 @@
 package cn.novalue.blog;
 
 import cn.novalue.blog.model.entity.User;
+import cn.novalue.blog.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * @author Wu Yangjie
@@ -10,12 +11,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 @SpringBootTest
 public class Test {
+    @Autowired
+    private UserService userService;
+
     @org.junit.jupiter.api.Test
     public void test() {
         User user = new User();
-        user.setUsername("张三");
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        user.setPassword(encoder.encode("zhangsan"));
-        System.out.println(user);
+        user.setUsername("zhangsan");
+        userService.save(user);
     }
 }
