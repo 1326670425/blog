@@ -4,6 +4,7 @@ import cn.novalue.blog.model.entity.User;
 import cn.novalue.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * @author Wu Yangjie
@@ -17,7 +18,9 @@ public class Test {
     @org.junit.jupiter.api.Test
     public void test() {
         User user = new User();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setUsername("zhangsan");
+        user.setPassword(encoder.encode("zhangsan"));
         userService.save(user);
     }
 }

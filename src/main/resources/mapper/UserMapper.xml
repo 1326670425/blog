@@ -2,6 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.novalue.blog.dao.UserDao">
 
-
+    <select id="selectUserRoles" resultType="cn.novalue.blog.model.entity.Role">
+        select role.name from role where role.id in (select role_id from user_role where user_id = #{id})
+    </select>
 
 </mapper>
