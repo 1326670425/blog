@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.novalue.blog.dao.MessageDao">
+
+    <select id="getMessageByPage" resultType="cn.novalue.blog.model.vo.MessageVO">
+        select u.username, u.avatar, m.*
+        from message m
+        inner join user u
+        on u.id = m.user_id
+        where m.deleted = 0
+        order by m.create_time desc
+    </select>
+    <select id="getUserMessageByPage" resultType="cn.novalue.blog.model.vo.MessageVO">
+        select u.username, u.avatar, m.*
+        from message m
+        inner join user u
+        on u.id = m.user_id
+        where u.id = #{userId}
+        and m.deleted = 0
+        order by m.create_time desc
+    </select>
+</mapper>

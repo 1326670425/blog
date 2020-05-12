@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.novalue.blog.dao.RootCommentDao">
+
+
+    <select id="getCommentPageByType" resultType="cn.novalue.blog.model.vo.CommentVO">
+        select u.username, u.avatar, rm.*
+        from root_comment rm
+        inner join user u
+        on u.id = rm.user_id
+        where rm.type = #{type}
+        and rm.host_id = #{host_id}
+        and rm.deleted = 0
+    </select>
+    <select id="getIdLists" resultType="java.lang.Long">
+        select rm.id from root_comment rm
+        where rm.host_id = #{host_id}
+        and rm.type = #{type}
+        and rm.deleted = 0
+    </select>
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(*) from root_comment rm
+        where rm.host_id = #{host_id}
+        and rm.type = #{type}
+        and rm.deleted = 0
+    </select>
+</mapper>

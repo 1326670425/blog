@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.novalue.blog.dao.ChildCommentDao">
+
+    <update id="removeByParents">
+        update child_comment set deleted = 1
+        where parent_id in
+        <foreach item="ids" collection="list" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </update>
+
+    <select id="getChildCommentByPage" resultType="cn.novalue.blog.model.vo.CommentVO">
+        select u.username, u.avatar, cm.*
+        from child_comment cm
+        inner join user u
+        on u.id = cm.user_id
+        where cm.parent_id = #{parent_id}
+        and cm.deleted = 0
+    </select>
+</mapper>
