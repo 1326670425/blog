@@ -45,7 +45,7 @@ public class CommonController {
     public IPage<MessageVO> getMessageByPage(
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "size", required = false, defaultValue = "20") Integer size) {
-        return messageService.getMessageByPage(new Page<>(page, size));
+        return messageService.getMessageByPage(new Page<>(page, size), null);
     }
 
     @GetMapping("message/user/{userId}")
@@ -53,7 +53,7 @@ public class CommonController {
             @PathVariable("userId") Long userId,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "size", required = false, defaultValue = "20") Integer size) {
-        return messageService.getUserMessageByPage(new Page<>(page, size), userId);
+        return messageService.getMessageByPage(new Page<>(page, size), userId);
     }
 
     @GetMapping("rootComment")

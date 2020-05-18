@@ -31,19 +31,8 @@ public class MessageServiceImpl extends ServiceImpl<MessageDao, Message> impleme
     private ChildCommentService childCommentService;
 
     @Override
-    public IPage<MessageVO> getMessageByPage(Page<?> page) {
-        IPage<MessageVO> pageMessage = messageDao.getMessageByPage(page);
-        List<MessageVO> messages = pageMessage.getRecords();
-        for (MessageVO messageVO : messages) {
-            messageVO.setCommentNum(rootCommentService.getCount(messageVO.getId(), CommentType.MESSAGE));
-        }
-        pageMessage.setRecords(messages);
-        return pageMessage;
-    }
-
-    @Override
-    public IPage<MessageVO> getUserMessageByPage(Page<?> page, Long userId) {
-        IPage<MessageVO> pageMessage = messageDao.getUserMessageByPage(page, userId);
+    public IPage<MessageVO> getMessageByPage(Page<?> page, Long userId) {
+        IPage<MessageVO> pageMessage = messageDao.getMessageByPage(page, userId);
         List<MessageVO> messages = pageMessage.getRecords();
         for (MessageVO messageVO : messages) {
             messageVO.setCommentNum(rootCommentService.getCount(messageVO.getId(), CommentType.MESSAGE));

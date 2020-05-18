@@ -8,15 +8,9 @@
         inner join user u
         on u.id = m.user_id
         where m.deleted = 0
-        order by m.create_time desc
-    </select>
-    <select id="getUserMessageByPage" resultType="cn.novalue.blog.model.vo.MessageVO">
-        select u.username, u.avatar, m.*
-        from message m
-        inner join user u
-        on u.id = m.user_id
-        where u.id = #{userId}
-        and m.deleted = 0
+        <if test="userId != null">
+            and u.id = #{userId}
+        </if>
         order by m.create_time desc
     </select>
 </mapper>

@@ -16,6 +16,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface MessageDao extends BaseMapper<Message> {
-    IPage<MessageVO> getMessageByPage(Page<?> page);
-    IPage<MessageVO> getUserMessageByPage(Page<?> page, @Param("userId") Long userId);
+    IPage<MessageVO> getMessageByPage(Page<?> page, @Param("userId") Long userId);
 }

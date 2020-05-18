@@ -15,7 +15,6 @@ import java.io.Serializable;
  * @date 2020-05-09
  */
 public interface MessageService extends IService<Message> {
-    IPage<MessageVO> getMessageByPage(Page<?> page);
-    IPage<MessageVO> getUserMessageByPage(Page<?> page, Long userId);
+    IPage<MessageVO> getMessageByPage(Page<?> page, Long userId);
     boolean removeMessage(Long id);
 }
