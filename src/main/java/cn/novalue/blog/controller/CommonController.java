@@ -3,12 +3,10 @@ package cn.novalue.blog.controller;
 import cn.novalue.blog.model.enums.CommentType;
 import cn.novalue.blog.model.params.RegisterParam;
 import cn.novalue.blog.model.support.Response;
+import cn.novalue.blog.model.vo.ArticleVO;
 import cn.novalue.blog.model.vo.CommentVO;
 import cn.novalue.blog.model.vo.MessageVO;
-import cn.novalue.blog.service.ChildCommentService;
-import cn.novalue.blog.service.MessageService;
-import cn.novalue.blog.service.RootCommentService;
-import cn.novalue.blog.service.UserService;
+import cn.novalue.blog.service.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +25,8 @@ public class CommonController {
     private UserService userService;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private ArticleService articleService;
     @Autowired
     private RootCommentService rootCommentService;
     @Autowired
@@ -55,7 +55,24 @@ public class CommonController {
             @RequestParam(value = "size", required = false, defaultValue = "20") Integer size) {
         return messageService.getMessageByPage(new Page<>(page, size), userId);
     }
+    @GetMapping("article")
+    public IPage<ArticleVO> getArticleByPage(
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "size", required = false, defaultValue = "20") Integer size) {
+        return articleService.getArticleByPage(new Page<>(page, size), null);
+    }
 
+    @GetMapping("article/user/{userId}")
+    public IPage<ArticleVO> getUserArticleByPage(
+            @PathVariable("userId") Long userId,
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "size", required = false, defaultValue = "20") Integer size) {
+        return articleService.getArticleByPage(new Page<>(page, size), userId);
+    }
+    @GetMapping("article/{id}")
+    public ArticleVO getDetails(@PathVariable("id") Long id) {
+        return articleService.getDetails(id);
+    }
     @GetMapping("rootComment")
     public IPage<CommentVO> getRootCommentByPage(
             @RequestParam(value = "type") Integer type,

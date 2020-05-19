@@ -21,9 +21,4 @@ public class TestController {
         return Response.success("success", map.get("username"));
     }
 
-    @GetMapping("/user")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String user() {
-        return "hello user";
-    }
 }

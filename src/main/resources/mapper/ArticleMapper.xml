@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.novalue.blog.dao.ArticleDao">
+
+    <select id="getArticleByPage" resultType="cn.novalue.blog.model.vo.ArticleVO">
+        select u.username, u.avatar, a.id, a.title, a.description, a.like_num, a.create_time, a.user_id
+        from article a
+        inner join user u
+        on u.id = a.user_id
+        where a.deleted = 0
+        <if test="userId != null">
+            and u.id = #{userId}
+        </if>
+        and a.status = 1
+        order by a.create_time desc
+    </select>
+
+    <select id="getMyArticleByPage" resultType="cn.novalue.blog.model.vo.ArticleVO">
+        select a.id, a.title, a.description, a.like_num, a.create_time
+        from article a
+        where a.user_id = #{userId}
+        and a.deleted = 0
+        order by a.create_time desc
+    </select>
+    <select id="getDetails" resultType="cn.novalue.blog.model.vo.ArticleVO">
+        select u.username, u.avatar, a.id, a.title, a.like_num, a.create_time, a.user_id
+        from article a
+        inner join user u
+        on u.id = a.user_id
+        where a.id = #{id}
+        and a.deleted = 0
+        and a.status = 1
+    </select>
+</mapper>
