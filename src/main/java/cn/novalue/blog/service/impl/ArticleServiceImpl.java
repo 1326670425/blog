@@ -54,6 +54,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
 
     @Override
     public ArticleVO getDetails(Long id) {
-        return articleDao.getDetails(id);
+        ArticleVO details = articleDao.getDetails(id);
+        details.setCommentNum(rootCommentService.getCount(details.getId(), CommentType.ARTICLE));
+        return details;
     }
 }

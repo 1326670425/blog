@@ -23,7 +23,7 @@
         order by a.create_time desc
     </select>
     <select id="getDetails" resultType="cn.novalue.blog.model.vo.ArticleVO">
-        select u.username, u.avatar, a.id, a.title, a.like_num, a.create_time, a.user_id
+        select u.username, u.avatar, a.id, a.title, a.content, a.like_num, a.create_time, a.user_id, a.type
         from article a
         inner join user u
         on u.id = a.user_id
