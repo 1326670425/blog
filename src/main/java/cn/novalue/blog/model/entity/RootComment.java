@@ -5,12 +5,9 @@ import java.util.Date;
 
 import java.io.Serializable;
 
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
@@ -34,7 +31,7 @@ public class RootComment implements Serializable {
     @TableField("deleted")
     private Integer deleted;
     // 发表时间    
-    @TableField("create_time")
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime createTime;

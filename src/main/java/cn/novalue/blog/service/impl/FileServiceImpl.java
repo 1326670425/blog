@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @Service
 public class FileServiceImpl implements FileService {
     @Override
-    public String upload(MultipartFile file) {
+    public String upload(MultipartFile file, HttpServletRequest request) {
         String filename = UUID.randomUUID().toString().replace("-", "") + file.getOriginalFilename();
         String userDir = System.getProperty("user.dir");
         System.out.println(userDir);
@@ -29,6 +30,8 @@ public class FileServiceImpl implements FileService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "/file/" + filename;
+        String url = request.getRequestURL().toString();
+        String baseAddress = url.substring(0, url.length() - request.getRequestURI().length());
+        return baseAddress + "/file/" + filename;
     }
 }

@@ -51,7 +51,10 @@ public class UserController {
 
     @PostMapping("uploadAvatar")
     public Response uploadAvatar(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
-        String path = fileService.upload(file);
-        return null;
+        String path = fileService.upload(file, request);
+        User user = SecurityUtils.getUser();
+        user.setAvatar(path);
+        userService.updateById(user);
+        return Response.success("上传成功", path);
     }
 }
