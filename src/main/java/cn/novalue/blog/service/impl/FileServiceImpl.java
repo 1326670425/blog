@@ -1,5 +1,6 @@
 package cn.novalue.blog.service.impl;
 
+import cn.novalue.blog.model.constants.PathConstant;
 import cn.novalue.blog.service.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public String upload(MultipartFile file, HttpServletRequest request) {
         String filename = UUID.randomUUID().toString().replace("-", "") + file.getOriginalFilename();
-        String userDir = System.getProperty("user.dir");
-        System.out.println(userDir);
+        String userDir = PathConstant.BASE_PATH;
         File dest = new File(userDir, filename);
         if (!dest.getParentFile().exists())
             dest.getParentFile().mkdirs();

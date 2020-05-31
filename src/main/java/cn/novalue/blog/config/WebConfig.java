@@ -1,5 +1,6 @@
 package cn.novalue.blog.config;
 
+import cn.novalue.blog.model.constants.PathConstant;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -24,6 +25,6 @@ public class WebConfig implements WebMvcConfigurer {
     }
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/file/**").addResourceLocations("file:" + System.getProperty("user.dir") + File.separator);
+        registry.addResourceHandler("/file/**").addResourceLocations("file:" + PathConstant.BASE_PATH + File.separator);
     }
 }
