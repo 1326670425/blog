@@ -22,6 +22,17 @@ spring:
         login-username: admin
         login-password: admin
       filters: stat,wall,slf4j
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+    password: root
+    timeout: 5000
+    jedis:
+      pool:
+        min-idle: 0
+        max-idle: 10
+        max-active: 8
 
 mybatis-plus:
   mapper-locations: classpath*:mapper/*.xml

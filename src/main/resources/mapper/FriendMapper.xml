@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.novalue.blog.dao.FriendDao">
+
+    <select id="getFriends" resultType="cn.novalue.blog.model.vo.UserVO">
+        select u.id, u.username, u.avatar, f.relation
+        from friend f
+        inner join user u
+        where (f.user_id_1 = #{userId} and f.user_id_2 = u.id)
+        or (f.user_id_2 = #{userId} and f.user_id_1 = u.id)
+        <if test="group != null">
+            and f.group = #{group}
+        </if>
+    </select>
+</mapper>
