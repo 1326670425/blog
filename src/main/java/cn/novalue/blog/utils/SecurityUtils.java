@@ -2,6 +2,8 @@ package cn.novalue.blog.utils;
 
 import cn.novalue.blog.model.entity.User;
 import cn.novalue.blog.security.entity.MyUserDetails;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,7 +25,15 @@ public class SecurityUtils {
         return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                 .orElseThrow(() -> new BadCredentialsException("认证信息错误：未认证"));
     }
+    /*
+     * Spring Security对于未登录用户会生成一个默认的AnonymousAuthenticationToken，
+     * 所以这里判断是否登录还要加上这一层判断
+     */
     public static boolean isAuthenticated() {
-        return getAuthentication().isAuthenticated();
+        Authentication authentication =  getAuthentication();
+        if (authentication instanceof AnonymousAuthenticationToken)
+            return false;
+        return authentication.isAuthenticated();
+
     }
 }
