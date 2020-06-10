@@ -44,6 +44,6 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Override
     public User findByUsername(String s) {
-        return getOne(new QueryWrapper<User>().eq("username", s));
+        return userDao.selectOne(s);
     }
 }

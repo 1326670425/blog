@@ -3,6 +3,7 @@ package cn.novalue.blog.service.impl;
 import cn.novalue.blog.model.enums.CommentType;
 import cn.novalue.blog.model.vo.ArticleVO;
 import cn.novalue.blog.service.ChildCommentService;
+import cn.novalue.blog.service.LikeService;
 import cn.novalue.blog.service.RootCommentService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -30,6 +31,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
     private RootCommentService rootCommentService;
     @Autowired
     private ChildCommentService childCommentService;
+    @Autowired
+    private LikeService likeService;
 
 
     @Override
@@ -38,6 +41,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
         List<ArticleVO> articles = pageMessage.getRecords();
         for (ArticleVO articleVO : articles) {
             articleVO.setCommentNum(rootCommentService.getCount(articleVO.getId(), CommentType.ARTICLE));
+            likeService.handleVO(articleVO, 1);
         }
         pageMessage.setRecords(articles);
         return pageMessage;

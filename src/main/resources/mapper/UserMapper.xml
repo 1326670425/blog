@@ -5,5 +5,12 @@
     <select id="selectUserRoles" resultType="cn.novalue.blog.model.entity.Role">
         select role.name from role where role.id in (select role_id from user_role where user_id = #{id})
     </select>
+    <select id="selectOne" resultType="cn.novalue.blog.model.entity.User">
+        select * from user u
+        where u.username = #{s}
+        or u.email = #{s}
+        or u.tel_number = #{s}
+        limit 1
+    </select>
 
 </mapper>

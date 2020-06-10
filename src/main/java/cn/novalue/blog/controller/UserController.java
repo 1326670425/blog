@@ -7,7 +7,6 @@ import cn.novalue.blog.service.FileService;
 import cn.novalue.blog.service.UserService;
 import cn.novalue.blog.utils.MyBeanUtils;
 import cn.novalue.blog.utils.SecurityUtils;
-import com.sun.xml.internal.fastinfoset.tools.FI_DOM_Or_XML_DOM_SAX_SAXEvent;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,7 +41,7 @@ public class UserController {
     @PostMapping("update")
     public Response update(@RequestBody UserVO userVO) {
         User user = SecurityUtils.getUser();
-        if (!user.getId().equals(userVO.getId()))
+        if (userVO.getId() != null && !user.getId().equals(userVO.getId()))
             return Response.failure(400, "不能修改id");
         MyBeanUtils.copy(userVO, user);
         userService.updateById(user);

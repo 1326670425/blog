@@ -5,6 +5,7 @@ import cn.novalue.blog.model.entity.Message;
 import cn.novalue.blog.model.enums.CommentType;
 import cn.novalue.blog.model.vo.CommentVO;
 import cn.novalue.blog.service.ChildCommentService;
+import cn.novalue.blog.service.LikeService;
 import cn.novalue.blog.service.MessageService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -35,6 +36,8 @@ public class RootCommentServiceImpl extends ServiceImpl<RootCommentDao, RootComm
     private ChildCommentService childCommentService;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private LikeService likeService;
 
     @Override
     public Integer getCount(Long hostId, CommentType type) {
@@ -55,6 +58,7 @@ public class RootCommentServiceImpl extends ServiceImpl<RootCommentDao, RootComm
         List<CommentVO> comments = commentPages.getRecords();
         for (CommentVO commentVO : comments) {
             commentVO.setChildrenNum(childCommentService.count(new QueryWrapper<ChildComment>().eq("parent_id", commentVO.getId())));
+            likeService.handleVO(commentVO, 2);
         }
         commentPages.setRecords(comments);
         return commentPages;

@@ -9,9 +9,10 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class ArticleVO extends MessageVO {
+public class ArticleVO extends BaseContentVO {
     private String title;
     private String description;
     private Integer type;
     private Integer status;
+    private Integer commentNum;
 }

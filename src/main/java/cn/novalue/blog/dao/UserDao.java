@@ -17,4 +17,5 @@ import java.util.List;
 @Repository
 public interface UserDao extends BaseMapper<User> {
     List<Role> selectUserRoles(@Param("id") Long id);
+    User selectOne(@Param("s") String s);
 }

@@ -3,6 +3,7 @@ package cn.novalue.blog.service.impl;
 import cn.novalue.blog.model.entity.Message;
 import cn.novalue.blog.model.entity.RootComment;
 import cn.novalue.blog.model.vo.CommentVO;
+import cn.novalue.blog.service.LikeService;
 import cn.novalue.blog.service.RootCommentService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
@@ -32,13 +33,21 @@ public class ChildCommentServiceImpl extends ServiceImpl<ChildCommentDao, ChildC
     private ChildCommentDao childCommentDao;
     @Autowired
     private RootCommentService rootCommentService;
+    @Autowired
+    private LikeService likeService;
 
     @Override
     public IPage<CommentVO> getCommentPage(Page page, String orderItem, Long parentId) {
         if (!StringUtils.isEmpty(orderItem) && orderItem.equalsIgnoreCase("like"))
             page.addOrder(OrderItem.desc("like_num"));
         page.addOrder(OrderItem.desc("create_time"));
-        return childCommentDao.getChildCommentByPage(page, parentId);
+        IPage<CommentVO> commentPage = childCommentDao.getChildCommentByPage(page, parentId);
+        List<CommentVO> commentVOS = commentPage.getRecords();
+        for (CommentVO commentVO : commentVOS) {
+            likeService.handleVO(commentVO, 3);
+        }
+        commentPage.setRecords(commentVOS);
+        return commentPage;
     }
 
     @Override

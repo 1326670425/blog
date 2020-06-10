@@ -1,22 +1,15 @@
 package cn.novalue.blog.model.vo;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.time.LocalDateTime;
 
 /**
  * @author Wu Yangjie
  * @date 2020-05-09
  */
+@EqualsAndHashCode(callSuper = false)
 @Data
-public class CommentVO {
-    private Long id;
-    private Long userId;
-    private String username;
-    private String avatar;
-    private String content;
-    private Integer likeNum;
-    private LocalDateTime createTime;
+public class CommentVO extends BaseContentVO{
     private Integer childrenNum;
 }
