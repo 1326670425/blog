@@ -1,8 +1,11 @@
 package cn.novalue.blog.controller;
 
+import cn.novalue.blog.model.entity.User;
 import cn.novalue.blog.model.enums.CommentType;
 import cn.novalue.blog.model.params.LikeParam;
 import cn.novalue.blog.model.params.RegisterParam;
+import cn.novalue.blog.model.params.ResetPwdParam;
+import cn.novalue.blog.model.support.CheckCode;
 import cn.novalue.blog.model.support.Response;
 import cn.novalue.blog.model.vo.ArticleVO;
 import cn.novalue.blog.model.vo.CommentVO;
@@ -13,9 +16,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +48,8 @@ public class CommonController {
     private LikeService likeService;
     @Autowired
     private MailService mailService;
+    @Autowired
+    private HttpSession session;
 
     @PostMapping("register")
     public Response register(@RequestBody @Validated RegisterParam registerParam) {
@@ -108,5 +117,50 @@ public class CommonController {
         Boolean result = likeService.handleRequest(likeParam);
         // 返回点赞结果，true表示点赞，false表示取消
         return Response.success(result);
+    }
+
+    @GetMapping("forget/info")
+    public Response getInfo(@RequestParam("info") String info) {
+        User u = userService.selectOne(info);
+        if (u == null)
+            return Response.failure(400, "未找到用户");
+        if (StringUtils.isEmpty(u.getEmail()))
+            return Response.failure(400, "用户未绑定邮箱");
+        session.setAttribute("info", u.getEmail());
+        // 返回脱敏后的邮箱
+        return Response.success("ok", u.getEmail().replaceAll("(\\w{3})\\w+@(\\w+)", "$1****@$2"));
+    }
+    @GetMapping("forget/code")
+    public void getCheckCode() {
+        String to = (String) session.getAttribute("info");
+        Map<String, Object> model = new HashMap<>();
+        CheckCode code = CheckCode.create();
+        model.put("info", to);
+        model.put("code", code.getCode());
+        session.setAttribute("code", code);
+        mailService.sendTemplateMail(to, "找回密码", model, "mail.ftl", null);
+    }
+    @GetMapping("forget/verify")
+    public Response verifyCheckCode(@RequestParam("code") String code) {
+        CheckCode checkCode = (CheckCode) session.getAttribute("code");
+        Assert.notNull(checkCode, "尚未发送验证码");
+        if (CheckCode.isExpired(checkCode) || !checkCode.getCode().equals(code))
+            return Response.failure(400, "验证码错误或过期");
+        session.setAttribute("validated", true);
+        return Response.success();
+    }
+    @PostMapping("forget/reset")
+    public Response resetPassword(@RequestBody @Validated ResetPwdParam pwdParam) {
+        Boolean status = (Boolean) session.getAttribute("validated");
+        if (status == null || !status)
+            return Response.failure(400, "尚未验证");
+        String info = (String) session.getAttribute("info");
+        User user = userService.selectOne(info);
+        user.setPassword(new BCryptPasswordEncoder().encode(pwdParam.getPassword()));
+        userService.updateById(user);
+        session.removeAttribute("info");
+        session.removeAttribute("code");
+        session.removeAttribute("validated");
+        return Response.success();
     }
 }

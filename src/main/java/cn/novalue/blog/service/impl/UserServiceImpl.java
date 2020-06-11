@@ -32,7 +32,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Override
     public boolean register(String username, String password) {
-        User user = findByUsername(username);
+        User user = selectOne(username);
         if (null != user) {
             return false;
         }
@@ -43,7 +43,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     }
 
     @Override
-    public User findByUsername(String s) {
+    public User selectOne(String s) {
         return userDao.selectOne(s);
     }
 }

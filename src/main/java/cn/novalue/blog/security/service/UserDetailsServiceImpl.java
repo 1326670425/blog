@@ -33,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) {
 
         log.info("start loading user from database");
-        User user = userService.findByUsername(s);
+        User user = userService.selectOne(s);
         if (user == null) {
             log.warn("user {} not found", s);
             throw new UsernameNotFoundException("找不到该用户");
