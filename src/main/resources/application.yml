@@ -33,6 +33,10 @@ spring:
         min-idle: 0
         max-idle: 10
         max-active: 8
+  mail:
+    username: 1326670425@qq.com
+    password: fznohmstnifrgeed
+    host: smtp.qq.com
 
 mybatis-plus:
   mapper-locations: classpath*:mapper/*.xml

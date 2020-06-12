@@ -4,9 +4,11 @@ import java.io.Serializable;
 import lombok.Data;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableField;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
-@TableName("notify_friend_Request")
+@TableName("notify_friend_request")
 public class NotifyFriendRequest extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
