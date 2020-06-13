@@ -22,7 +22,5 @@ public class BaseContentVO {
     private Integer likeNum;
     // 用户是否已点赞该内容，true表示已赞，false表示未赞
     private Boolean liked;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime createTime;
 }

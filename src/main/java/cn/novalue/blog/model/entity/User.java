@@ -1,6 +1,7 @@
 package cn.novalue.blog.model.entity;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import cn.novalue.blog.model.enums.GenderEnum;
 import lombok.Data;
@@ -32,4 +33,7 @@ public class User extends BaseEntity implements Serializable {
     // 电话    
     @TableField("tel_number")
     private String telNumber;
+    // 上次登录时间
+    @TableField("last_login")
+    private LocalDateTime lastLogin;
 }

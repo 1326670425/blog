@@ -34,8 +34,8 @@ spring:
         max-idle: 10
         max-active: 8
   mail:
-    username: 1326670425@qq.com
-    password: fznohmstnifrgeed
+    username: 邮箱地址
+    password: smtp密码
     host: smtp.qq.com
 
 mybatis-plus:

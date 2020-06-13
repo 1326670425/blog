@@ -3,9 +3,11 @@ package cn.novalue.blog.security.handler;
 import cn.novalue.blog.model.entity.User;
 import cn.novalue.blog.model.support.Response;
 import cn.novalue.blog.model.vo.UserVO;
+import cn.novalue.blog.service.UserService;
 import cn.novalue.blog.utils.JSONUtils;
 import cn.novalue.blog.utils.MyBeanUtils;
 import cn.novalue.blog.utils.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -24,6 +26,8 @@ import java.io.IOException;
  */
 @Component
 public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+    @Autowired
+    private UserService userService;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException {
         // 设置返回结果的格式
@@ -32,8 +36,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
         // 这里后续考虑是否需要将用户角色返回前台做处理
         // ((UserDetails)authentication.getPrincipal()).getAuthorities().stream().map(GrantedAuthority::getAuthority).forEach(System.out::println);
         User user = SecurityUtils.getUser();
-        UserVO userVO = new UserVO();
-        MyBeanUtils.copy(user, userVO);
+        UserVO userVO = userService.firstLogin(user);
         httpServletResponse.getWriter().write(JSONUtils.objectToJSON(Response.success("登录成功", userVO)));
     }
 }

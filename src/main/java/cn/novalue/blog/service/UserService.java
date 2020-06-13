@@ -2,6 +2,7 @@ package cn.novalue.blog.service;
 
 import cn.novalue.blog.model.entity.Role;
 import cn.novalue.blog.model.support.Response;
+import cn.novalue.blog.model.vo.UserVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import cn.novalue.blog.model.entity.User;
 
@@ -15,6 +16,8 @@ import java.util.List;
  */
 public interface UserService extends IService<User> {
     User selectOne(String s);
+
+    UserVO firstLogin(User user);
 
     List<Role> selectUserRoles(Long userId);
 
