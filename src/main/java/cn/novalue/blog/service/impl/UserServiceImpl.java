@@ -1,10 +1,8 @@
 package cn.novalue.blog.service.impl;
 
 import cn.novalue.blog.model.entity.Role;
-import cn.novalue.blog.model.support.Response;
 import cn.novalue.blog.model.vo.UserVO;
 import cn.novalue.blog.utils.MyBeanUtils;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.novalue.blog.dao.UserDao;
 import cn.novalue.blog.model.entity.User;
@@ -63,6 +61,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         // 今日首次登录，这里保留做首次登录逻辑，暂时只是更新了上次登录时间
         // 更新上次登录时间
         user.setLastLogin(LocalDateTime.now());
+        saveOrUpdate(user);
         return userVO;
     }
 }
