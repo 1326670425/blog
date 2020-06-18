@@ -8,7 +8,12 @@ import cn.novalue.blog.dao.FriendDao;
 import cn.novalue.blog.model.entity.Friend;
 import cn.novalue.blog.service.FriendService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * 好友表(Friend)表服务实现类
@@ -21,10 +26,45 @@ public class FriendServiceImpl extends ServiceImpl<FriendDao, Friend> implements
 
     @Autowired
     private FriendDao friendDao;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @Override
-    public IPage<UserVO> getFriends(Page page, Long currentUserId, String group) {
+    public boolean addFriend(@NotNull Long userId1, @NotNull Long userId2) {
+        if (isExist(userId1, userId2))
+            return false;
+        // 保证userId1小于userId2，防止出现重复
+        if (userId1 > userId2) {
+            long i = userId1;
+            userId1 = userId2;
+            userId2 = i;
+        }
+        Friend friend = new Friend();
+        friend.setUserId1(userId1);
+        friend.setUserId2(userId2);
+        boolean result = save(friend);
+        // saveToRedis(friend);
+        return result;
+    }
 
-        return friendDao.getFriends(page, currentUserId, group);
+    @Override
+    public List<UserVO> getFriends(Long currentUserId, String group) {
+        if (StringUtils.isEmpty(group.trim()))
+            group = null;
+        return friendDao.getFriends(currentUserId, group);
+    }
+    // 检查是否已经存在好友关系
+    private boolean isExist(Long userId1, Long userId2) {
+        Boolean exist = redisTemplate.opsForSet().isMember("friend:"+userId1+":默认分组", userId2);
+        if (exist == null || !exist)
+            exist = redisTemplate.opsForSet().isMember("friend:"+userId2+":默认分组", userId1);
+        return exist != null && exist;
+    }
+    // 好友关系保存到Redis
+    private void saveToRedis(Friend friend) {
+        Long userId1 = friend.getUserId1();
+        Long userId2 = friend.getUserId2();
+        redisTemplate.opsForSet().add("friend:"+userId1+":默认分组", String.valueOf(userId2));
+        redisTemplate.opsForSet().add("friend:"+userId2+":默认分组", String.valueOf(userId1));
     }
 }

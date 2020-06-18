@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * 好友表(Friend)表数据库访问层
  *
@@ -17,5 +19,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FriendDao extends BaseMapper<Friend> {
 
-    IPage<UserVO> getFriends(Page<?> page, @Param("userId") Long userId, @Param("group") String group);
+    List<UserVO> getFriends(@Param("userId") Long userId, @Param("group") String group);
 }

@@ -8,7 +8,7 @@
         inner join user u
         where (f.user_id_1 = #{userId} and f.user_id_2 = u.id)
         or (f.user_id_2 = #{userId} and f.user_id_1 = u.id)
-        <if test="group != null">
+        <if test="group != null and group != ''">
             and f.group = #{group}
         </if>
     </select>

@@ -11,6 +11,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 /**
  * 好友表(Friend)表控制层
  *
@@ -40,11 +42,9 @@ public class FriendController {
     }
 
     @GetMapping("getFriend")
-    public IPage<UserVO> getFriends(
-            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
-            @RequestParam(value = "size", required = false, defaultValue = "20") Integer size,
+    public List<UserVO> getFriends(
             @RequestParam(value = "group", required = false) String group) {
         Long currentUserId = SecurityUtils.getUser().getId();
-        return friendService.getFriends(new Page<>(page, size), currentUserId, group);
+        return friendService.getFriends(currentUserId, group);
     }
 }
