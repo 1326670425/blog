@@ -5,6 +5,7 @@ import cn.novalue.blog.model.vo.ArticleVO;
 import cn.novalue.blog.service.ChildCommentService;
 import cn.novalue.blog.service.LikeService;
 import cn.novalue.blog.service.RootCommentService;
+import cn.novalue.blog.utils.SecurityUtils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -37,7 +38,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, Article> impleme
 
     @Override
     public IPage<ArticleVO> getArticleByPage(Page<?> page, Long userId) {
-        IPage<ArticleVO> pageMessage = articleDao.getArticleByPage(page, userId);
+        IPage<ArticleVO> pageMessage;
+        if (SecurityUtils.isAuthenticated() && SecurityUtils.getUser().getId().equals(userId))
+            pageMessage = articleDao.getMyArticleInfoByPage(page, userId);
+        else
+            pageMessage = articleDao.getArticleByPage(page, userId);
         List<ArticleVO> articles = pageMessage.getRecords();
         for (ArticleVO articleVO : articles) {
             articleVO.setCommentNum(rootCommentService.getCount(articleVO.getId(), CommentType.ARTICLE));

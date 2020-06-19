@@ -4,8 +4,11 @@ package cn.novalue.blog.controller;
 
 import cn.novalue.blog.model.entity.Article;
 import cn.novalue.blog.model.support.Response;
+import cn.novalue.blog.model.vo.ArticleVO;
 import cn.novalue.blog.service.ArticleService;
 import cn.novalue.blog.utils.SecurityUtils;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -40,5 +43,12 @@ public class ArticleController {
             return Response.failure(400, "不能删除别人的内容");
         articleService.removeArticle(article.getId());
         return Response.success("删除成功");
+    }
+
+    @GetMapping("mine")
+    public IPage<ArticleVO> getMyArticle(
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "size", required = false, defaultValue = "20") Integer size) {
+        return articleService.getArticleByPage(new Page<>(page, size), SecurityUtils.getUser().getId());
     }
 }

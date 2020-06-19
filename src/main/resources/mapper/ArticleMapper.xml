@@ -15,8 +15,8 @@
         order by a.create_time desc
     </select>
 
-    <select id="getMyArticleByPage" resultType="cn.novalue.blog.model.vo.ArticleVO">
-        select a.id, a.title, a.description, a.like_num, a.create_time
+    <select id="getMyArticleInfoByPage" resultType="cn.novalue.blog.model.vo.ArticleVO">
+        select a.id, a.title, a.description, a.like_num, a.create_time, a.status, a.type
         from article a
         where a.user_id = #{userId}
         and a.deleted = 0

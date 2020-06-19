@@ -30,9 +30,9 @@ public class UserController {
     @Autowired
     private FileService fileService;
 
-    @GetMapping("")
-    public UserVO getProfile() {
-        User user = userService.getById(SecurityUtils.getUser().getId());
+    @GetMapping("{userId}")
+    public UserVO getProfile(@PathVariable("userId") Long userId) {
+        User user = userService.getById(userId);
         UserVO userVo = new UserVO();
         MyBeanUtils.copy(user, userVo);
         return userVo;

@@ -17,6 +17,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ArticleDao extends BaseMapper<Article> {
     IPage<ArticleVO> getArticleByPage(Page<?> page, @Param("userId") Long userId);
-    IPage<ArticleVO> getMyArticleByPage(Page<?> page, @Param("userId") Long userId);
+    IPage<ArticleVO> getMyArticleInfoByPage(Page<?> page, @Param("userId") Long userId);
     ArticleVO getDetails(@Param("id") Long id);
 }
