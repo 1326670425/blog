@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.novalue.blog.dao.LetterDao">
+
+    <select id="getLetterByPage" resultType="cn.novalue.blog.model.vo.LetterVO">
+        select u.username, u.avatar, l.*
+        from letter l
+        inner join user u
+        on u.id = l.sender
+        where l.receiver = #{userId}
+        and l.deleted = 0
+        order by l.create_time desc
+    </select>
+
+</mapper>
