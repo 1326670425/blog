@@ -1,5 +1,7 @@
 package cn.novalue.blog.service.impl;
 
+import cn.novalue.blog.model.entity.U2uNotify;
+import cn.novalue.blog.model.enums.U2uNotifyType;
 import cn.novalue.blog.model.vo.UserVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -66,5 +68,26 @@ public class FriendServiceImpl extends ServiceImpl<FriendDao, Friend> implements
         Long userId2 = friend.getUserId2();
         redisTemplate.opsForSet().add("friend:"+userId1+":默认分组", String.valueOf(userId2));
         redisTemplate.opsForSet().add("friend:"+userId2+":默认分组", String.valueOf(userId1));
+    }
+
+
+    /* 处理好友通知 */
+    @Override
+    public Boolean handle(U2uNotify u2uNotify) {
+        int status = u2uNotify.getStatus();
+        boolean result = false;
+        // 同意好友申请
+        if (status == 1) {
+            Long userId1 = u2uNotify.getSender();
+            Long userId2 = u2uNotify.getReceiver();
+
+            result = addFriend(userId1, userId2);
+        }
+        return result;
+    }
+
+    @Override
+    public U2uNotifyType getHandlerType() {
+        return U2uNotifyType.FRIEND;
     }
 }

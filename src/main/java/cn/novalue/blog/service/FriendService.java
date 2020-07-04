@@ -1,5 +1,6 @@
 package cn.novalue.blog.service;
 
+import cn.novalue.blog.handler.U2uNotifyHandler;
 import cn.novalue.blog.model.vo.UserVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -14,7 +15,7 @@ import java.util.List;
  * @author Wu yangjie
  * @date 2020-06-08
  */
-public interface FriendService extends IService<Friend> {
+public interface FriendService extends IService<Friend>, U2uNotifyHandler {
     boolean addFriend(Long userId1, Long userId2);
     List<UserVO> getFriends(Long currentUserId, String group);
 }

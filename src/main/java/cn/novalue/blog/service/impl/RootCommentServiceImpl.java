@@ -4,9 +4,7 @@ import cn.novalue.blog.model.entity.ChildComment;
 import cn.novalue.blog.model.entity.Message;
 import cn.novalue.blog.model.enums.CommentType;
 import cn.novalue.blog.model.vo.CommentVO;
-import cn.novalue.blog.service.ChildCommentService;
-import cn.novalue.blog.service.LikeService;
-import cn.novalue.blog.service.MessageService;
+import cn.novalue.blog.service.*;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
@@ -14,7 +12,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.novalue.blog.dao.RootCommentDao;
 import cn.novalue.blog.model.entity.RootComment;
-import cn.novalue.blog.service.RootCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -38,6 +35,8 @@ public class RootCommentServiceImpl extends ServiceImpl<RootCommentDao, RootComm
     private MessageService messageService;
     @Autowired
     private LikeService likeService;
+    @Autowired
+    private U2uNotifyService u2uNotifyService;
 
     @Override
     public Integer getCount(Long hostId, CommentType type) {
@@ -71,6 +70,7 @@ public class RootCommentServiceImpl extends ServiceImpl<RootCommentDao, RootComm
             log.warn("所属内容不存在");
             return false;
         }
-        return save(comment);
+        boolean result = save(comment);
+        return result;
     }
 }

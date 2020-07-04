@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.novalue.blog.dao.U2uNotifyDao">
+
+
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(*)
+        from u2u_notify un
+        where un.receiver = #{receiver}
+        and un.status = 0
+        and un.deleted = 0;
+    </select>
+    <select id="getTypeCount" resultType="java.util.Map">
+        select type, count(*)
+        from u2u_notify un
+        where un.receiver = #{receiver}
+        and un.status = 0
+        and un.deleted = 0
+        group by un.type
+    </select>
+    <select id="getNotifyByType" resultType="cn.novalue.blog.model.entity.U2uNotify">
+        select *
+        from u2u_notify un
+        where un.receiver = #{receiver}
+        and un.type = #{type}
+        and un.status = 0
+        and un.deleted = 0;
+    </select>
+
+</mapper>
