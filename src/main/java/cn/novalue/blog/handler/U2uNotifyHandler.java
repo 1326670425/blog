@@ -9,6 +9,16 @@ import cn.novalue.blog.model.enums.U2uNotifyType;
  * @date 2020-07-04
  */
 public interface U2uNotifyHandler {
+    /**
+     * 处理通知消息
+     * @param u2uNotify 通知实体
+     * @return 处理结果
+     */
     Boolean handle(U2uNotify u2uNotify);
+
+    /**
+     * 获取具体通知类型
+     * @return 通知类型
+     */
     U2uNotifyType getHandlerType();
 }
