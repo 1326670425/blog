@@ -51,4 +51,12 @@ public class U2uNotifyServiceImpl extends ServiceImpl<U2uNotifyDao, U2uNotify> i
         String type = u2uNotify.getType().toUpperCase();
         return u2uNotifyFactory.getHandler(U2uNotifyType.valueOf(type)).handle(u2uNotify);
     }
+
+    @Override
+    public boolean save(U2uNotify entity) {
+        User currentUser = SecurityUtils.getUser();
+        entity.setSender(currentUser.getId());
+        entity.setSenderName(currentUser.getUsername());
+        return super.save(entity);
+    }
 }

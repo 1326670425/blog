@@ -27,7 +27,17 @@ public interface U2uNotifyService extends IService<U2uNotify> {
      */
     Map<String, Integer> getTypeCount();
 
+    /**
+     * 获取某一类型的未读通知
+     * @param notifyType 通知类型
+     * @return 未读通知列表
+     */
     List<U2uNotify> getNotifyByType(U2uNotifyType notifyType);
 
+    /**
+     * 处理通知
+     * @param u2uNotify 待处理通知实体
+     * @return 是否成功处理
+     */
     Boolean handleU2uNotify(U2uNotify u2uNotify);
 }

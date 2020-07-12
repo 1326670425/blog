@@ -1,16 +1,18 @@
 package cn.novalue.blog.service.impl;
 
-import cn.novalue.blog.model.entity.Message;
-import cn.novalue.blog.model.entity.RootComment;
+import cn.novalue.blog.model.entity.*;
+import cn.novalue.blog.model.enums.CommentType;
+import cn.novalue.blog.model.enums.U2uNotifyType;
 import cn.novalue.blog.model.vo.CommentVO;
 import cn.novalue.blog.service.LikeService;
 import cn.novalue.blog.service.RootCommentService;
+import cn.novalue.blog.service.U2uNotifyService;
+import cn.novalue.blog.utils.SecurityUtils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.novalue.blog.dao.ChildCommentDao;
-import cn.novalue.blog.model.entity.ChildComment;
 import cn.novalue.blog.service.ChildCommentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,8 @@ public class ChildCommentServiceImpl extends ServiceImpl<ChildCommentDao, ChildC
     private RootCommentService rootCommentService;
     @Autowired
     private LikeService likeService;
+    @Autowired
+    private U2uNotifyService u2uNotifyService;
 
     @Override
     public IPage<CommentVO> getCommentPage(Page page, String orderItem, Long parentId) {
@@ -67,6 +71,14 @@ public class ChildCommentServiceImpl extends ServiceImpl<ChildCommentDao, ChildC
             log.warn("对应的一级评论不存在");
             return false;
         }
-        return save(comment);
+        U2uNotify notify = new U2uNotify();
+        notify.setReceiver(rootComment.getUserId());
+        notify.setTargetId(rootComment.getId());
+        notify.setTargetType("root_comment");
+        notify.setTargetDesc(rootComment.getContent());
+        notify.setType(U2uNotifyType.REPLY.name().toLowerCase());
+        boolean result = save(comment);
+        result &= u2uNotifyService.save(notify);
+        return result;
     }
 }

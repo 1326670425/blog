@@ -92,9 +92,6 @@ public class RootCommentServiceImpl extends ServiceImpl<RootCommentDao, RootComm
         }
         boolean result = save(comment);
         U2uNotify notify = new U2uNotify();
-        User user = SecurityUtils.getUser();
-        notify.setSender(user.getId());
-        notify.setSenderName(user.getUsername());
         notify.setReceiver(receiver);
         notify.setTargetId(targetId);
         notify.setTargetType(CommentType.valueOf(comment.getType()).name().toLowerCase());
