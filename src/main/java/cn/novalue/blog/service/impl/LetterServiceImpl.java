@@ -1,5 +1,9 @@
 package cn.novalue.blog.service.impl;
 
+import cn.novalue.blog.event.U2uNotifyEvent;
+import cn.novalue.blog.model.entity.U2uNotify;
+import cn.novalue.blog.model.entity.User;
+import cn.novalue.blog.model.enums.U2uNotifyType;
 import cn.novalue.blog.model.vo.LetterVO;
 import cn.novalue.blog.service.UserService;
 import cn.novalue.blog.utils.SecurityUtils;
@@ -10,6 +14,7 @@ import cn.novalue.blog.dao.LetterDao;
 import cn.novalue.blog.model.entity.Letter;
 import cn.novalue.blog.service.LetterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,15 +30,24 @@ public class LetterServiceImpl extends ServiceImpl<LetterDao, Letter> implements
     private LetterDao letterDao;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     @Override
     public void add(Letter letter) {
-        letter.setSender(SecurityUtils.getUser().getId());
+        User currentUser = SecurityUtils.getUser();
+        letter.setSender(currentUser.getId());
         Long receiver = letter.getReceiver();
         if (userService.getById(receiver) == null)
             throw new RuntimeException("找不到用户");
+        // 保存留言
         save(letter);
-        // 这里留着给接收者发通知
+        // 给接收者发送通知
+        U2uNotify notify = new U2uNotify();
+        notify.setType(U2uNotifyType.LETTER.name());
+        notify.setTargetId(receiver);
+        notify.setTargetType("user");
+        eventPublisher.publishEvent(new U2uNotifyEvent(notify, currentUser));
     }
 
     @Override

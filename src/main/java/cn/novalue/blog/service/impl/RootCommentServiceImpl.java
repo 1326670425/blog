@@ -1,5 +1,6 @@
 package cn.novalue.blog.service.impl;
 
+import cn.novalue.blog.event.U2uNotifyEvent;
 import cn.novalue.blog.model.entity.*;
 import cn.novalue.blog.model.enums.CommentType;
 import cn.novalue.blog.model.enums.U2uNotifyType;
@@ -13,6 +14,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.novalue.blog.dao.RootCommentDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -38,7 +40,7 @@ public class RootCommentServiceImpl extends ServiceImpl<RootCommentDao, RootComm
     @Autowired
     private LikeService likeService;
     @Autowired
-    private U2uNotifyService u2uNotifyService;
+    private ApplicationEventPublisher eventPublisher;
 
     @Override
     public Integer getCount(Long hostId, CommentType type) {
@@ -97,7 +99,7 @@ public class RootCommentServiceImpl extends ServiceImpl<RootCommentDao, RootComm
         notify.setTargetType(CommentType.valueOf(comment.getType()).name().toLowerCase());
         notify.setTargetDesc(targetDesc);
         notify.setType(U2uNotifyType.COMMENT.name().toLowerCase());
-        result &= u2uNotifyService.save(notify);
+        eventPublisher.publishEvent(new U2uNotifyEvent(notify, SecurityUtils.getUser()));
         return result;
     }
 }

@@ -3,8 +3,6 @@ package cn.novalue.blog.service.impl;
 import cn.novalue.blog.model.entity.U2uNotify;
 import cn.novalue.blog.model.enums.U2uNotifyType;
 import cn.novalue.blog.model.vo.UserVO;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.novalue.blog.dao.FriendDao;
 import cn.novalue.blog.model.entity.Friend;
@@ -51,7 +49,7 @@ public class FriendServiceImpl extends ServiceImpl<FriendDao, Friend> implements
 
     @Override
     public List<UserVO> getFriends(Long currentUserId, String group) {
-        if (StringUtils.isEmpty(group.trim()))
+        if (!StringUtils.hasText(group))
             group = null;
         return friendDao.getFriends(currentUserId, group);
     }

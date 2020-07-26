@@ -48,15 +48,12 @@ public class U2uNotifyServiceImpl extends ServiceImpl<U2uNotifyDao, U2uNotify> i
 
     @Override
     public Boolean handleU2uNotify(U2uNotify u2uNotify) {
-        String type = u2uNotify.getType().toUpperCase();
-        return u2uNotifyFactory.getHandler(U2uNotifyType.valueOf(type)).handle(u2uNotify);
-    }
-
-    @Override
-    public boolean save(U2uNotify entity) {
-        User currentUser = SecurityUtils.getUser();
-        entity.setSender(currentUser.getId());
-        entity.setSenderName(currentUser.getUsername());
-        return super.save(entity);
+        U2uNotifyType u2uNotifyType;
+        try {
+            u2uNotifyType = U2uNotifyType.valueOf(u2uNotify.getType().toUpperCase());
+            return u2uNotifyFactory.getHandler(u2uNotifyType).handle(u2uNotify);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("通知类型不存在");
+        }
     }
 }

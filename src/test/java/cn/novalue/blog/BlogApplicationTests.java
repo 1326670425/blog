@@ -5,6 +5,7 @@ import cn.novalue.blog.service.MailService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.ArrayList;
@@ -19,6 +20,13 @@ class BlogApplicationTests {
     private RedisTemplate<String, Object> redisTemplate;
     @Autowired
     private MailService mailService;
+    @Autowired
+    private ApplicationEventPublisher publisher;
+
+    @Test
+    public void testEvent() {
+        publisher.publishEvent(new MyEvent(1));
+    }
 
     @Test
     void contextLoads() {

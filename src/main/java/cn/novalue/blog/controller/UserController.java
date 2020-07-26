@@ -1,12 +1,15 @@
 package cn.novalue.blog.controller;
 
+import cn.novalue.blog.model.entity.U2uNotify;
 import cn.novalue.blog.model.entity.User;
 import cn.novalue.blog.model.support.Response;
 import cn.novalue.blog.model.vo.UserVO;
 import cn.novalue.blog.service.FileService;
+import cn.novalue.blog.service.U2uNotifyService;
 import cn.novalue.blog.service.UserService;
 import cn.novalue.blog.utils.MyBeanUtils;
 import cn.novalue.blog.utils.SecurityUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +32,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private FileService fileService;
+    @Autowired
+    private U2uNotifyService u2uNotifyService;
 
     @GetMapping("{userId}")
     public UserVO getProfile(@PathVariable("userId") Long userId) {
@@ -55,5 +60,10 @@ public class UserController {
         user.setAvatar(path);
         userService.updateById(user);
         return Response.success("上传成功", path);
+    }
+
+    @PostMapping("handleU2uNotify")
+    public void handleRequest(@RequestBody U2uNotify notify) {
+        u2uNotifyService.handleU2uNotify(notify);
     }
 }

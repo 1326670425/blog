@@ -16,10 +16,10 @@ public class U2uNotify extends BaseEntity implements Serializable {
     // 通知消息类型，比如评论通知，回复通知等    
     @TableField("type")
     private String type;
-    // 发送者id    
+    // 发送者id，0表示系统通知
     @TableField("sender")
     private Long sender;
-    // 发送者用户名    
+    // 发送者用户名
     @TableField("sender_name")
     private String senderName;
     // 接收者id    

@@ -1,11 +1,13 @@
 package cn.novalue.blog.controller;
 
+import cn.novalue.blog.event.U2uNotifyEvent;
 import cn.novalue.blog.model.entity.U2uNotify;
 import cn.novalue.blog.model.support.Response;
 import cn.novalue.blog.model.vo.UserVO;
 import cn.novalue.blog.service.FriendService;
 import cn.novalue.blog.service.U2uNotifyService;
 import cn.novalue.blog.utils.SecurityUtils;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,17 +28,14 @@ public class FriendController {
     @Autowired
     private FriendService friendService;
     @Autowired
-    private U2uNotifyService u2uNotifyService;
+    private ApplicationEventPublisher eventPublisher;
 
     @PostMapping("request")
     public Response Request(@RequestBody U2uNotify friendRequest) {
-        u2uNotifyService.save(friendRequest);
+        friendRequest.setType("friend");
+        friendRequest.setTargetType("user");
+        eventPublisher.publishEvent(new U2uNotifyEvent(friendRequest, SecurityUtils.getUser()));
         return Response.success("好友申请提交成功");
-    }
-
-    @PostMapping("handleRequest")
-    public void handleRequest(@RequestBody U2uNotify friendRequest) {
-        u2uNotifyService.handleU2uNotify(friendRequest);
     }
 
     @GetMapping("getFriend")

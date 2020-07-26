@@ -1,5 +1,6 @@
 package cn.novalue.blog.service.impl;
 
+import cn.novalue.blog.event.U2uNotifyEvent;
 import cn.novalue.blog.model.entity.*;
 import cn.novalue.blog.model.enums.CommentType;
 import cn.novalue.blog.model.enums.U2uNotifyType;
@@ -16,6 +17,7 @@ import cn.novalue.blog.dao.ChildCommentDao;
 import cn.novalue.blog.service.ChildCommentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -38,7 +40,7 @@ public class ChildCommentServiceImpl extends ServiceImpl<ChildCommentDao, ChildC
     @Autowired
     private LikeService likeService;
     @Autowired
-    private U2uNotifyService u2uNotifyService;
+    private ApplicationEventPublisher eventPublisher;
 
     @Override
     public IPage<CommentVO> getCommentPage(Page page, String orderItem, Long parentId) {
@@ -78,7 +80,7 @@ public class ChildCommentServiceImpl extends ServiceImpl<ChildCommentDao, ChildC
         notify.setTargetDesc(rootComment.getContent());
         notify.setType(U2uNotifyType.REPLY.name().toLowerCase());
         boolean result = save(comment);
-        result &= u2uNotifyService.save(notify);
+        eventPublisher.publishEvent(new U2uNotifyEvent(notify, SecurityUtils.getUser()));
         return result;
     }
 }
