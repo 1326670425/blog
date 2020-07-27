@@ -4,6 +4,7 @@ import cn.novalue.blog.event.U2uNotifyEvent;
 import cn.novalue.blog.model.entity.U2uNotify;
 import cn.novalue.blog.model.entity.User;
 import cn.novalue.blog.model.enums.U2uNotifyType;
+import cn.novalue.blog.model.support.Response;
 import cn.novalue.blog.model.vo.LetterVO;
 import cn.novalue.blog.service.UserService;
 import cn.novalue.blog.utils.SecurityUtils;
@@ -47,11 +48,23 @@ public class LetterServiceImpl extends ServiceImpl<LetterDao, Letter> implements
         notify.setType(U2uNotifyType.LETTER.name());
         notify.setTargetId(receiver);
         notify.setTargetType("user");
+        notify.setMessage(letter.getContent().substring(0, 256));
         eventPublisher.publishEvent(new U2uNotifyEvent(notify, currentUser));
     }
 
     @Override
     public IPage<LetterVO> getLetterByPage(Page page, Long userId) {
         return letterDao.getLetterByPage(page, userId);
+    }
+
+    /* 处理留言通知 */
+    @Override
+    public Response handle(U2uNotify u2uNotify) {
+        return Response.success();
+    }
+
+    @Override
+    public U2uNotifyType getHandlerType() {
+        return U2uNotifyType.LETTER;
     }
 }

@@ -1,5 +1,6 @@
 package cn.novalue.blog.service;
 
+import cn.novalue.blog.handler.U2uNotifyHandler;
 import cn.novalue.blog.model.enums.CommentType;
 import cn.novalue.blog.model.vo.CommentVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -15,7 +16,7 @@ import java.util.List;
  * @author Wu yangjie
  * @date 2020-05-09
  */
-public interface RootCommentService extends IService<RootComment> {
+public interface RootCommentService extends IService<RootComment>, U2uNotifyHandler {
     Integer getCount(Long hostId, CommentType type);
     List<Long> getIdLists(Long hostId, CommentType type);
     IPage<CommentVO> getCommentPageByType(Page page, String orderItem, Long hostId, CommentType type);

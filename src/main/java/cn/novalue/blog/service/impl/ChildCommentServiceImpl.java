@@ -4,6 +4,7 @@ import cn.novalue.blog.event.U2uNotifyEvent;
 import cn.novalue.blog.model.entity.*;
 import cn.novalue.blog.model.enums.CommentType;
 import cn.novalue.blog.model.enums.U2uNotifyType;
+import cn.novalue.blog.model.support.Response;
 import cn.novalue.blog.model.vo.CommentVO;
 import cn.novalue.blog.service.LikeService;
 import cn.novalue.blog.service.RootCommentService;
@@ -82,5 +83,17 @@ public class ChildCommentServiceImpl extends ServiceImpl<ChildCommentDao, ChildC
         boolean result = save(comment);
         eventPublisher.publishEvent(new U2uNotifyEvent(notify, SecurityUtils.getUser()));
         return result;
+    }
+
+    /* 处理回复通知 */
+    @Override
+    public Response handle(U2uNotify u2uNotify) {
+        Long rootCommentId = u2uNotify.getTargetId();
+        return Response.success();
+    }
+
+    @Override
+    public U2uNotifyType getHandlerType() {
+        return U2uNotifyType.REPLY;
     }
 }

@@ -2,6 +2,7 @@ package cn.novalue.blog.handler;
 
 import cn.novalue.blog.model.entity.U2uNotify;
 import cn.novalue.blog.model.enums.U2uNotifyType;
+import cn.novalue.blog.model.support.Response;
 
 /**
  * 用户对用户通知处理接口
@@ -14,7 +15,7 @@ public interface U2uNotifyHandler {
      * @param u2uNotify 通知实体
      * @return 处理结果
      */
-    Boolean handle(U2uNotify u2uNotify);
+    Response handle(U2uNotify u2uNotify);
 
     /**
      * 获取具体通知类型

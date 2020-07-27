@@ -2,6 +2,7 @@ package cn.novalue.blog.service.impl;
 
 import cn.novalue.blog.model.entity.U2uNotify;
 import cn.novalue.blog.model.enums.U2uNotifyType;
+import cn.novalue.blog.model.support.Response;
 import cn.novalue.blog.model.vo.UserVO;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.novalue.blog.dao.FriendDao;
@@ -71,7 +72,7 @@ public class FriendServiceImpl extends ServiceImpl<FriendDao, Friend> implements
 
     /* 处理好友通知 */
     @Override
-    public Boolean handle(U2uNotify u2uNotify) {
+    public Response handle(U2uNotify u2uNotify) {
         int status = u2uNotify.getStatus();
         boolean result = false;
         // 同意好友申请
@@ -81,7 +82,7 @@ public class FriendServiceImpl extends ServiceImpl<FriendDao, Friend> implements
 
             result = addFriend(userId1, userId2);
         }
-        return result;
+        return Response.builder().data(result).build();
     }
 
     @Override

@@ -63,7 +63,7 @@ public class UserController {
     }
 
     @PostMapping("handleU2uNotify")
-    public void handleRequest(@RequestBody U2uNotify notify) {
-        u2uNotifyService.handleU2uNotify(notify);
+    public Response handleRequest(@RequestBody U2uNotify notify) {
+        return u2uNotifyService.handleU2uNotify(notify);
     }
 }

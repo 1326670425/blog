@@ -21,9 +21,7 @@ public class U2uNotifyFactory implements ApplicationContextAware {
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         Map<String, U2uNotifyHandler> beansOfType = applicationContext.getBeansOfType(U2uNotifyHandler.class);
         u2uNotifyHandlerMap = new HashMap<>(beansOfType.size());
-        beansOfType.forEach((k, v) -> {
-            u2uNotifyHandlerMap.put(v.getHandlerType(), v);
-        });
+        beansOfType.forEach((k, v) -> u2uNotifyHandlerMap.put(v.getHandlerType(), v));
     }
     public U2uNotifyHandler getHandler(U2uNotifyType u2uNotifyType) {
         return u2uNotifyHandlerMap.get(u2uNotifyType);

@@ -2,6 +2,7 @@ package cn.novalue.blog.controller;
 
 import cn.novalue.blog.event.U2uNotifyEvent;
 import cn.novalue.blog.model.entity.U2uNotify;
+import cn.novalue.blog.model.enums.U2uNotifyType;
 import cn.novalue.blog.model.support.Response;
 import cn.novalue.blog.model.vo.UserVO;
 import cn.novalue.blog.service.FriendService;
@@ -32,7 +33,7 @@ public class FriendController {
 
     @PostMapping("request")
     public Response Request(@RequestBody U2uNotify friendRequest) {
-        friendRequest.setType("friend");
+        friendRequest.setType(U2uNotifyType.FRIEND.name());
         friendRequest.setTargetType("user");
         eventPublisher.publishEvent(new U2uNotifyEvent(friendRequest, SecurityUtils.getUser()));
         return Response.success("好友申请提交成功");

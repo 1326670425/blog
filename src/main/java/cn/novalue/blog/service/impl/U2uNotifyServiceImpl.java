@@ -4,6 +4,7 @@ import cn.novalue.blog.factory.U2uNotifyFactory;
 import cn.novalue.blog.model.entity.U2uNotify;
 import cn.novalue.blog.model.entity.User;
 import cn.novalue.blog.model.enums.U2uNotifyType;
+import cn.novalue.blog.model.support.Response;
 import cn.novalue.blog.utils.SecurityUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.novalue.blog.dao.U2uNotifyDao;
@@ -47,11 +48,15 @@ public class U2uNotifyServiceImpl extends ServiceImpl<U2uNotifyDao, U2uNotify> i
     }
 
     @Override
-    public Boolean handleU2uNotify(U2uNotify u2uNotify) {
+    public Response handleU2uNotify(U2uNotify u2uNotify) {
         U2uNotifyType u2uNotifyType;
         try {
             u2uNotifyType = U2uNotifyType.valueOf(u2uNotify.getType().toUpperCase());
-            return u2uNotifyFactory.getHandler(u2uNotifyType).handle(u2uNotify);
+            Response result = u2uNotifyFactory.getHandler(u2uNotifyType).handle(u2uNotify);
+            // 标记已读
+            u2uNotify.setStatus(1);
+            updateById(u2uNotify);
+            return result;
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("通知类型不存在");
         }

@@ -4,6 +4,7 @@ import cn.novalue.blog.event.U2uNotifyEvent;
 import cn.novalue.blog.model.entity.*;
 import cn.novalue.blog.model.enums.CommentType;
 import cn.novalue.blog.model.enums.U2uNotifyType;
+import cn.novalue.blog.model.support.Response;
 import cn.novalue.blog.model.vo.CommentVO;
 import cn.novalue.blog.service.*;
 import cn.novalue.blog.utils.SecurityUtils;
@@ -96,10 +97,30 @@ public class RootCommentServiceImpl extends ServiceImpl<RootCommentDao, RootComm
         U2uNotify notify = new U2uNotify();
         notify.setReceiver(receiver);
         notify.setTargetId(targetId);
-        notify.setTargetType(CommentType.valueOf(comment.getType()).name().toLowerCase());
+        notify.setTargetType(CommentType.valueOf(comment.getType()).name());
         notify.setTargetDesc(targetDesc);
         notify.setType(U2uNotifyType.COMMENT.name().toLowerCase());
         eventPublisher.publishEvent(new U2uNotifyEvent(notify, SecurityUtils.getUser()));
         return result;
+    }
+
+    /* 处理评论通知 */
+    @Override
+    public Response handle(U2uNotify u2uNotify) {
+        // 看是文章的评论还是消息的评论
+        String targetType = u2uNotify.getTargetType();
+        Long targetId = u2uNotify.getTargetId();
+        if (targetType.equals(CommentType.ARTICLE.name())) {
+            articleService.getDetails(targetId);
+        } else if (targetType.equals(CommentType.MESSAGE.name())) {
+            messageService.getById(targetId);
+        }
+        // 这里可以写入返回逻辑，比如跳转到指定的文章或消息
+        return Response.success();
+    }
+
+    @Override
+    public U2uNotifyType getHandlerType() {
+        return U2uNotifyType.COMMENT;
     }
 }

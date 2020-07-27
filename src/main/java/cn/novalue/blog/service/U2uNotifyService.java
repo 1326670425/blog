@@ -2,6 +2,7 @@ package cn.novalue.blog.service;
 
 import cn.novalue.blog.model.entity.U2uNotify;
 import cn.novalue.blog.model.enums.U2uNotifyType;
+import cn.novalue.blog.model.support.Response;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -39,5 +40,5 @@ public interface U2uNotifyService extends IService<U2uNotify> {
      * @param u2uNotify 待处理通知实体
      * @return 是否成功处理
      */
-    Boolean handleU2uNotify(U2uNotify u2uNotify);
+    Response handleU2uNotify(U2uNotify u2uNotify);
 }

@@ -7,8 +7,6 @@ package cn.novalue.blog.model.enums;
  * @date 2020-07-04
  */
 public enum  U2uNotifyType {
-    MESSAGE,
-    ARTICLE,
     COMMENT,
     REPLY,
     FRIEND,
