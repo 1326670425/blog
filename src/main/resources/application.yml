@@ -1,11 +1,10 @@
-
 spring:
   datasource:
     platform: mysql
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://121.36.26.71:3306/blog?serverTimezone=GMT%2B8&characterEncoding=utf8&useUnicode=true&useSSL=true
+    url: jdbc:mysql://localhost:3306/blog?serverTimezone=GMT%2B8&characterEncoding=utf8&useUnicode=true&useSSL=true
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       min-idle: 5
@@ -25,7 +24,7 @@ spring:
       filters: stat,wall,slf4j
   redis:
     database: 0
-    host: 121.36.26.71
+    host: localhost
     port: 6379
     password: root
     timeout: 5000
@@ -35,8 +34,8 @@ spring:
         max-idle: 10
         max-active: 8
   mail:
-    username: 1326670425@qq.com
-    password: fznohmstnifrgeed
+    username: 账户
+    password: 密码
     host: smtp.qq.com
 
 mybatis-plus:
@@ -47,5 +46,3 @@ mybatis-plus:
       logic-delete-field: deleted
       logic-delete-value: 1
       logic-not-delete-value: 0
-server:
-  port: 8080

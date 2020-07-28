@@ -2,6 +2,7 @@ package cn.novalue.blog.controller;
 
 import cn.novalue.blog.model.entity.U2uNotify;
 import cn.novalue.blog.model.entity.User;
+import cn.novalue.blog.model.enums.U2uNotifyType;
 import cn.novalue.blog.model.support.Response;
 import cn.novalue.blog.model.vo.UserVO;
 import cn.novalue.blog.service.FileService;
@@ -65,5 +66,19 @@ public class UserController {
     @PostMapping("handleU2uNotify")
     public Response handleRequest(@RequestBody U2uNotify notify) {
         return u2uNotifyService.handleU2uNotify(notify);
+    }
+
+    @GetMapping("getNotify")
+    public Integer getNotifyCount() {
+        return u2uNotifyService.getCount();
+    }
+    @GetMapping("getNotify")
+    public Response getNotifyByTypeCount() {
+        return Response.success(u2uNotifyService.getTypeCount());
+    }
+    @GetMapping("getNotify")
+    public Response getNotifyByType(@RequestParam String type) {
+        U2uNotifyType u2uNotifyType = U2uNotifyType.valueOf(type);
+        return Response.success(u2uNotifyService.getNotifyByType(u2uNotifyType));
     }
 }
