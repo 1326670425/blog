@@ -24,25 +24,6 @@ class BlogApplicationTests {
     private ApplicationEventPublisher publisher;
 
     @Test
-    public void testEvent() {
-        publisher.publishEvent(new MyEvent(1));
-    }
-
-    @Test
-    void contextLoads() {
-        List<User> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            User user = new User();
-            user.setUsername("张三");
-            user.setPassword("123456" + i);
-            list.add(user);
-        }
-        redisTemplate.opsForValue().set("test", list);
-        List<User> s = (List<User>)redisTemplate.opsForValue().get("test");
-        System.out.println(s);
-    }
-
-    @Test
     public void testMail() {
         Map<String, Object> content = new HashMap<>();
         content.put("email", "email");

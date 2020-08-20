@@ -68,15 +68,15 @@ public class UserController {
         return u2uNotifyService.handleU2uNotify(notify);
     }
 
-    @GetMapping("getNotify")
+    @GetMapping("getNotifyCount")
     public Integer getNotifyCount() {
         return u2uNotifyService.getCount();
     }
-    @GetMapping("getNotify")
+    @GetMapping("getNotifyByTypeCount")
     public Response getNotifyByTypeCount() {
         return Response.success(u2uNotifyService.getTypeCount());
     }
-    @GetMapping("getNotify")
+    @GetMapping("getNotifyByType")
     public Response getNotifyByType(@RequestParam String type) {
         U2uNotifyType u2uNotifyType = U2uNotifyType.valueOf(type);
         return Response.success(u2uNotifyService.getNotifyByType(u2uNotifyType));
