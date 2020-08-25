@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.novalue.blog.dao.ResumeEducationDao">
+
+    <resultMap type="cn.novalue.blog.model.entity.ResumeEducation" id="ResumeEducationMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="school" column="school" jdbcType="VARCHAR"/>
+        <result property="identity" column="identity" jdbcType="VARCHAR"/>
+        <result property="startTime" column="start_time" jdbcType="OTHER"/>
+        <result property="endTime" column="end_time" jdbcType="OTHER"/>
+        <result property="languageType" column="language_type" jdbcType="VARCHAR"/>
+        <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+    </resultMap>
+    <select id="findByUserId" resultType="cn.novalue.blog.model.entity.ResumeEducation">
+        select * from resume_education
+        where user_id = #{userId}
+        and deleted = 0
+        order by end_time desc
+    </select>
+
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.novalue.blog.dao.ResumeGeneralDao">
+
+    <resultMap type="cn.novalue.blog.model.entity.ResumeGeneral" id="ResumeGeneralMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="realName" column="real_name" jdbcType="VARCHAR"/>
+        <result property="birthday" column="birthday" jdbcType="OTHER"/>
+        <result property="profilePicture" column="profile_picture" jdbcType="VARCHAR"/>
+        <result property="position" column="position" jdbcType="VARCHAR"/>
+        <result property="location" column="location" jdbcType="VARCHAR"/>
+        <result property="introduction" column="introduction" jdbcType="VARCHAR"/>
+        <result property="languageType" column="language_type" jdbcType="VARCHAR"/>
+        <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+    </resultMap>
+    <select id="findByUserId" resultType="cn.novalue.blog.model.entity.ResumeGeneral">
+        select * from resume_general
+        where user_id = #{userId}
+        and deleted = 0
+        limit 1
+    </select>
+
+</mapper>

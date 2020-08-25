@@ -23,4 +23,9 @@ public class Test {
         user.setPassword(encoder.encode("zhangsan"));
         userService.save(user);
     }
+
+    public static void main(String[] args) {
+        Byte b = 1;
+        Long l = (long)b;
+    }
 }
