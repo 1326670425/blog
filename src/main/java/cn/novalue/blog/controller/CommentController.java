@@ -35,10 +35,8 @@ public class CommentController {
     @PostMapping("root/add")
     public Response addRoot(@RequestBody @Validated RootCommentParam commentParam) {
         RootComment comment = new RootComment();
-        System.out.println(commentParam);
         MyBeanUtils.copy(commentParam, comment);
         comment.setUserId(SecurityUtils.getUser().getId());
-        System.out.println(comment);
         if (rootCommentService.add(comment))
             return Response.success("发表评论成功");
         return Response.failure(400, "发表评论失败");

@@ -13,9 +13,5 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("hasAuthority('ADMIN')")
 @RequestMapping("admin")
 public class AdminController {
-    @GetMapping("test")
-    public String test() {
-        return "test";
-    }
 
 }
