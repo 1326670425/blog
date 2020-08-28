@@ -51,6 +51,7 @@ public class U2uNotifyServiceImpl extends ServiceImpl<U2uNotifyDao, U2uNotify> i
     public Response handleU2uNotify(U2uNotify u2uNotify) {
         U2uNotifyType u2uNotifyType;
         try {
+            System.out.println(u2uNotify);
             u2uNotifyType = U2uNotifyType.valueOf(u2uNotify.getType().toUpperCase());
             Response result = u2uNotifyFactory.getHandler(u2uNotifyType).handle(u2uNotify);
             // 标记已读

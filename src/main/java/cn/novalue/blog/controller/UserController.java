@@ -65,6 +65,7 @@ public class UserController {
 
     @PostMapping("handleU2uNotify")
     public Response handleRequest(@RequestBody U2uNotify notify) {
+        System.out.println(notify);
         return u2uNotifyService.handleU2uNotify(notify);
     }
 

@@ -10,11 +10,14 @@ import cn.novalue.blog.model.support.Response;
 import cn.novalue.blog.model.vo.ArticleVO;
 import cn.novalue.blog.model.vo.CommentVO;
 import cn.novalue.blog.model.vo.MessageVO;
+import cn.novalue.blog.model.vo.UserVO;
 import cn.novalue.blog.service.*;
+import cn.novalue.blog.utils.MyBeanUtils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.Assert;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Wu Yangjie
@@ -162,5 +166,17 @@ public class CommonController {
         session.removeAttribute("code");
         session.removeAttribute("validated");
         return Response.success();
+    }
+    @GetMapping("search/user")
+    public Response register(@RequestParam String username) {
+        User user =  userService.findByUsername(username);
+        if(Objects.isNull(user)){
+            return Response.failure(HttpStatus.BAD_REQUEST.value(), "您查找的人不存在");
+        }
+        else {
+            UserVO userVO = new UserVO();
+            MyBeanUtils.copy(user,userVO);
+            return Response.success(userVO);
+        }
     }
 }

@@ -79,7 +79,7 @@ public class RootCommentServiceImpl extends ServiceImpl<RootCommentDao, RootComm
                 log.warn("所属内容不存在");
                 return false;
             }
-            targetDesc = message.getContent().substring(0, 20);
+            targetDesc = message.getContent();
             targetId = message.getId();
             receiver = message.getUserId();
         }
@@ -89,7 +89,7 @@ public class RootCommentServiceImpl extends ServiceImpl<RootCommentDao, RootComm
                 log.warn("所属内容不存在");
                 return false;
             }
-            targetDesc = article.getDescription().substring(0, 20);
+            targetDesc = article.getDescription();
             targetId = article.getId();
             receiver = article.getUserId();
         }

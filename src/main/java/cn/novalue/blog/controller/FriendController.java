@@ -35,6 +35,7 @@ public class FriendController {
     public Response Request(@RequestBody U2uNotify friendRequest) {
         friendRequest.setType(U2uNotifyType.FRIEND.name());
         friendRequest.setTargetType("user");
+        friendRequest.setTargetId(friendRequest.getReceiver());
         eventPublisher.publishEvent(new U2uNotifyEvent(friendRequest, SecurityUtils.getUser()));
         return Response.success("好友申请提交成功");
     }

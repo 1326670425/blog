@@ -50,6 +50,11 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     }
 
     @Override
+    public User findByUsername(String username) {
+        return userDao.findByUsername(username);
+    }
+
+    @Override
     public UserVO firstLogin(User user) {
         LocalDate lastLogin = user.getLastLogin().toLocalDate();
         UserVO userVO = new UserVO();

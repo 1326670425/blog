@@ -22,4 +22,6 @@ public interface UserService extends IService<User> {
     List<Role> selectUserRoles(Long userId);
 
     boolean register(String username, String password);
+
+    User findByUsername(String username);
 }

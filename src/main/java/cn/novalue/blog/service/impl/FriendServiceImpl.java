@@ -56,9 +56,9 @@ public class FriendServiceImpl extends ServiceImpl<FriendDao, Friend> implements
     }
     // 检查是否已经存在好友关系
     private boolean isExist(Long userId1, Long userId2) {
-        Boolean exist = redisTemplate.opsForSet().isMember("friend:"+userId1+":默认分组", userId2);
+        Boolean exist = redisTemplate.opsForSet().isMember("friend:"+userId1.toString()+":默认分组", userId2.toString());
         if (exist == null || !exist)
-            exist = redisTemplate.opsForSet().isMember("friend:"+userId2+":默认分组", userId1);
+            exist = redisTemplate.opsForSet().isMember("friend:"+userId2.toString()+":默认分组", userId1.toString());
         return exist != null && exist;
     }
     // 好友关系保存到Redis

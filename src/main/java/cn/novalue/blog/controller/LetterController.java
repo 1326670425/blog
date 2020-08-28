@@ -4,6 +4,7 @@ package cn.novalue.blog.controller;
 
 import cn.novalue.blog.model.entity.Letter;
 import cn.novalue.blog.model.support.Response;
+import cn.novalue.blog.model.vo.LetterVO;
 import cn.novalue.blog.service.LetterService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -32,9 +33,10 @@ public class LetterController {
         return Response.success();
     }
     @GetMapping("get")
-    public IPage<Letter> get(
+    public IPage<LetterVO> get(
+            @RequestParam(value = "userId") Long userId,
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "size", required = false, defaultValue = "20") Integer size) {
-        return letterService.page(new Page<>(page, size));
+        return letterService.getLetterByPage(new Page<>(page, size), userId);
     }
 }
