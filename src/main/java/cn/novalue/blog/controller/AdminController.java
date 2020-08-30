@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2020-08-25
  */
 @RestController
-@PreAuthorize("hasAuthority('ADMIN')")
+@PreAuthorize("hasAuthority('admin')")
 @RequestMapping("admin")
 public class AdminController {
 

@@ -16,4 +16,8 @@ public class RegisterParam {
     private String username;
     @NotBlank(message = "密码不能为空")
     private String password;
+    // 用户角色，学生/老师
+    private String role;
+    // 职称，硕士、博士、以及导师的职称等
+    private String title;
 }
