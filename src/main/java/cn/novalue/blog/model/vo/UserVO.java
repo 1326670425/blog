@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 public class UserVO {
     private Long id;
     private String username;
+    private LocalDate birthday;
     private String email;
     private String telNumber;
     private String avatar;

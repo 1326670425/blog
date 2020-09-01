@@ -3,14 +3,17 @@ package cn.novalue.blog.controller;
 import cn.novalue.blog.model.entity.U2uNotify;
 import cn.novalue.blog.model.entity.User;
 import cn.novalue.blog.model.enums.U2uNotifyType;
+import cn.novalue.blog.model.params.LikeParam;
 import cn.novalue.blog.model.support.Response;
 import cn.novalue.blog.model.vo.UserVO;
 import cn.novalue.blog.service.FileService;
+import cn.novalue.blog.service.LikeService;
 import cn.novalue.blog.service.U2uNotifyService;
 import cn.novalue.blog.service.UserService;
 import cn.novalue.blog.utils.MyBeanUtils;
 import cn.novalue.blog.utils.SecurityUtils;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,6 +38,8 @@ public class UserController {
     private FileService fileService;
     @Autowired
     private U2uNotifyService u2uNotifyService;
+    @Autowired
+    private LikeService likeService;
 
     @GetMapping("{userId}")
     public UserVO getProfile(@PathVariable("userId") Long userId) {
@@ -81,5 +86,12 @@ public class UserController {
     public Response getNotifyByType(@RequestParam String type) {
         U2uNotifyType u2uNotifyType = U2uNotifyType.valueOf(type);
         return Response.success(u2uNotifyService.getNotifyByType(u2uNotifyType));
+    }
+
+    @PostMapping("like")
+    public Response like(@RequestBody @Validated LikeParam likeParam) {
+        Boolean result = likeService.handleRequest(likeParam);
+        // 返回点赞结果，true表示点赞，false表示取消
+        return Response.success(result);
     }
 }

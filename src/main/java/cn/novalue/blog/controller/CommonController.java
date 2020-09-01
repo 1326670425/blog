@@ -2,7 +2,6 @@ package cn.novalue.blog.controller;
 
 import cn.novalue.blog.model.entity.User;
 import cn.novalue.blog.model.enums.CommentType;
-import cn.novalue.blog.model.params.LikeParam;
 import cn.novalue.blog.model.params.RegisterParam;
 import cn.novalue.blog.model.params.ResetPwdParam;
 import cn.novalue.blog.model.support.CheckCode;
@@ -16,9 +15,7 @@ import cn.novalue.blog.utils.MyBeanUtils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -48,8 +45,6 @@ public class CommonController {
     private RootCommentService rootCommentService;
     @Autowired
     private ChildCommentService childCommentService;
-    @Autowired
-    private LikeService likeService;
     @Autowired
     private MailService mailService;
     @Autowired
@@ -113,14 +108,6 @@ public class CommonController {
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "size", required = false, defaultValue = "20") Integer size) {
         return childCommentService.getCommentPage(new Page(page, size), orderItem, parentId);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("like")
-    public Response like(@RequestBody @Validated LikeParam likeParam) {
-        Boolean result = likeService.handleRequest(likeParam);
-        // 返回点赞结果，true表示点赞，false表示取消
-        return Response.success(result);
     }
 
     @GetMapping("forget/info")

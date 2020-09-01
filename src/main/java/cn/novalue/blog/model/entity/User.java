@@ -1,6 +1,7 @@
 package cn.novalue.blog.model.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import cn.novalue.blog.model.enums.GenderEnum;
@@ -21,6 +22,9 @@ public class User extends BaseEntity implements Serializable {
     // 密码    
     @TableField("password")
     private String password;
+    // 生日
+    @TableField("birthday")
+    private LocalDate birthday;
     // 头像地址    
     @TableField("avatar")
     private String avatar;

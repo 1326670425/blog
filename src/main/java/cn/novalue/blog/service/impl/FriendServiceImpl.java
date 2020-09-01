@@ -1,5 +1,6 @@
 package cn.novalue.blog.service.impl;
 
+import cn.novalue.blog.model.constants.RedisConstant;
 import cn.novalue.blog.model.entity.U2uNotify;
 import cn.novalue.blog.model.enums.U2uNotifyType;
 import cn.novalue.blog.model.support.Response;
@@ -56,17 +57,17 @@ public class FriendServiceImpl extends ServiceImpl<FriendDao, Friend> implements
     }
     // 检查是否已经存在好友关系
     private boolean isExist(Long userId1, Long userId2) {
-        Boolean exist = redisTemplate.opsForSet().isMember("friend:"+userId1.toString()+":默认分组", userId2.toString());
+        Boolean exist = redisTemplate.opsForSet().isMember(RedisConstant.FRIEND + userId1.toString()+":默认分组", userId2.toString());
         if (exist == null || !exist)
-            exist = redisTemplate.opsForSet().isMember("friend:"+userId2.toString()+":默认分组", userId1.toString());
+            exist = redisTemplate.opsForSet().isMember(RedisConstant.FRIEND + userId2.toString()+":默认分组", userId1.toString());
         return exist != null && exist;
     }
     // 好友关系保存到Redis
     private void saveToRedis(Friend friend) {
         Long userId1 = friend.getUserId1();
         Long userId2 = friend.getUserId2();
-        redisTemplate.opsForSet().add("friend:"+userId1+":默认分组", String.valueOf(userId2));
-        redisTemplate.opsForSet().add("friend:"+userId2+":默认分组", String.valueOf(userId1));
+        redisTemplate.opsForSet().add(RedisConstant.FRIEND+userId1+":默认分组", String.valueOf(userId2));
+        redisTemplate.opsForSet().add(RedisConstant.FRIEND+userId2+":默认分组", String.valueOf(userId1));
     }
 
 
