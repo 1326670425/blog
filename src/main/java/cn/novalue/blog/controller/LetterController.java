@@ -11,6 +11,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 /**
  * 留言表(Letter)表控制层
  *
@@ -38,5 +40,9 @@ public class LetterController {
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "size", required = false, defaultValue = "20") Integer size) {
         return letterService.getLetterByPage(new Page<>(page, size), userId);
+    }
+    @GetMapping("delete")
+    public boolean delete(@RequestParam("ids") List<Long> ids) {
+        return letterService.removeByIds(ids);
     }
 }
