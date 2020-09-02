@@ -6,10 +6,7 @@ import cn.novalue.blog.model.enums.U2uNotifyType;
 import cn.novalue.blog.model.params.LikeParam;
 import cn.novalue.blog.model.support.Response;
 import cn.novalue.blog.model.vo.UserVO;
-import cn.novalue.blog.service.FileService;
-import cn.novalue.blog.service.LikeService;
-import cn.novalue.blog.service.U2uNotifyService;
-import cn.novalue.blog.service.UserService;
+import cn.novalue.blog.service.*;
 import cn.novalue.blog.utils.MyBeanUtils;
 import cn.novalue.blog.utils.SecurityUtils;
 import org.springframework.scheduling.annotation.Async;
@@ -19,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Set;
 
 /**
  * 用户表(User)表控制层
@@ -40,6 +38,8 @@ public class UserController {
     private U2uNotifyService u2uNotifyService;
     @Autowired
     private LikeService likeService;
+    @Autowired
+    private WebSocketService webSocketService;
 
     @GetMapping("{userId}")
     public UserVO getProfile(@PathVariable("userId") Long userId) {
@@ -93,5 +93,10 @@ public class UserController {
         Boolean result = likeService.handleRequest(likeParam);
         // 返回点赞结果，true表示点赞，false表示取消
         return Response.success(result);
+    }
+
+    @GetMapping("onlineUsers")
+    public Set<User> onlineUsers() {
+        return webSocketService.getOnlineSet();
     }
 }
