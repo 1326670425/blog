@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.HandshakeResponse;
 import javax.websocket.server.HandshakeRequest;
 import javax.websocket.server.ServerEndpointConfig;
+import java.util.Objects;
 
 /**
  * @author Wu Yangjie
@@ -30,7 +31,9 @@ public class WebSocketConfig extends ServerEndpointConfig.Configurator implement
     @Override
     public void modifyHandshake(ServerEndpointConfig sec, HandshakeRequest request, HandshakeResponse response) {
         HttpSession httpSession = (HttpSession) request.getHttpSession();
-        sec.getUserProperties().put(HttpSession.class.getName(), httpSession);
+        if (!Objects.isNull(httpSession)) {
+            sec.getUserProperties().put(HttpSession.class.getName(), httpSession);
+        }
     }
 
     @Override

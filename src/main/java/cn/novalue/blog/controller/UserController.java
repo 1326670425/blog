@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -96,7 +97,7 @@ public class UserController {
     }
 
     @GetMapping("onlineUsers")
-    public Set<User> onlineUsers() {
+    public Collection<User> onlineUsers() {
         return webSocketService.getOnlineSet();
     }
 }
