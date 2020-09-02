@@ -86,7 +86,8 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from cgcl.question where id = #{id}
+        update cgcl.question  set deleted = 1
+         where id = #{id}
     </delete>
 
     <select id="find" resultMap="QuestionMap">

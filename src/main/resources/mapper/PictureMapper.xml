@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.novalue.blog.dao.PictureDao">
+
+    <resultMap type="cn.novalue.blog.model.entity.Picture" id="PictureMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="albumId" column="album_id" jdbcType="INTEGER"/>
+        <result property="url" column="url" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="likeNum" column="like_num" jdbcType="INTEGER"/>
+        <result property="viewNum" column="view_num" jdbcType="INTEGER"/>
+        <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="PictureMap">
+        select
+          id, album_id, url, create_time, update_time,like_num,view_num
+        from cgcl.picture
+        where id = #{id}
+    </select>
+
+    <select id="find" resultMap="PictureMap">
+        select
+          id, album_id, url, create_time, update_time,like_num,view_num
+        from cgcl.picture
+        where album_id = #{albumId}
+    </select>
+
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="PictureMap">
+        select
+          id, album_id, url, create_time, update_time,like_num,view_num
+        from cgcl.picture
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="PictureMap">
+        select
+        id, album_id, url, create_time, update_time,like_num,view_num
+        from cgcl.picture
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="albumId != null">
+                and album_id = #{albumId}
+            </if>
+            <if test="url != null and url != ''">
+                and url = #{url}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into cgcl.picture(album_id, url, create_time, update_time,like_num,view_num)
+        values (#{albumId}, #{url}, #{createTime}, #{updateTime},#{likeNum},#{viewNum})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update cgcl.picture
+        <set>
+            <if test="albumId != null">
+                album_id = #{albumId},
+            </if>
+            <if test="url != null and url != ''">
+                url = #{url},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="likeNum != null">
+                like_num = #{likeNum},
+            </if>
+            <if test="viewNum != null">
+                view_num = #{viewNum},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        update cgcl.picture set deleted=1
+        where id = #{id}
+    </delete>
+    <select id="getPictrueByPage" resultMap="PictureMap">
+        select
+          id, album_id, url, create_time, update_time,like_num,view_num
+        from cgcl.picture
+        where album_id = #{albumId}
+        and deleted = 0
+        order by create_time desc
+    </select>
+
+</mapper>
