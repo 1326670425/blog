@@ -1,5 +1,6 @@
 package cn.novalue.blog.controller;
 
+import cn.novalue.blog.model.entity.Question;
 import cn.novalue.blog.model.entity.User;
 import cn.novalue.blog.model.enums.CommentType;
 import cn.novalue.blog.model.params.RegisterParam;
@@ -12,6 +13,7 @@ import cn.novalue.blog.model.vo.MessageVO;
 import cn.novalue.blog.model.vo.UserVO;
 import cn.novalue.blog.service.*;
 import cn.novalue.blog.utils.MyBeanUtils;
+import cn.novalue.blog.utils.SecurityUtils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -49,6 +52,8 @@ public class CommonController {
     private MailService mailService;
     @Autowired
     private HttpSession session;
+    @Autowired
+    private QuestionService questionService;
 
     @PostMapping("register")
     public Response register(@RequestBody @Validated RegisterParam registerParam) {
@@ -165,5 +170,24 @@ public class CommonController {
             MyBeanUtils.copy(user,userVO);
             return Response.success(userVO);
         }
+    }
+    @GetMapping("getQuestion")
+    public List<Question> getQuestion(@RequestParam("userId") Long userId){
+        List<Question> questions =  questionService.find(SecurityUtils.getUser().getId());
+        for(Question q:questions){
+            q.setAnswer("");
+        }
+        return questions;
+    }
+
+    @PostMapping("verify")
+    public Response verify(@RequestBody List<Question> questions){
+        for(Question q:questions){
+            Question correct = questionService.queryById(q.getId());
+            if(!q.getAnswer().equals(correct.getAnswer())){
+                return Response.failure(400, "问题回答有误");
+            }
+        }
+        return Response.success("验证成功");
     }
 }

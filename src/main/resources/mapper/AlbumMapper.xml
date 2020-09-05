@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.novalue.blog.dao.AlbumDao">
+
+    <resultMap type="cn.novalue.blog.model.entity.Album" id="AlbumMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="bname" column="bname" jdbcType="VARCHAR"/>
+        <result property="auth" column="auth" jdbcType="INTEGER"/>
+        <result property="total" column="total" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="AlbumMap">
+        select
+          id, user_id, bname, auth, total, create_time, update_time
+        from cgcl.album
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="AlbumMap">
+        select
+          id, user_id, bname, auth, total, create_time, update_time
+        from cgcl.album
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="AlbumMap">
+        select
+        id, user_id, bname, auth, total, create_time, update_time
+        from cgcl.album
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="bname != null and bname != ''">
+                and bname = #{bname}
+            </if>
+            <if test="auth != null">
+                and auth = #{auth}
+            </if>
+            <if test="total != null">
+                and total = #{total}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into cgcl.album(user_id, bname, auth, total, create_time, update_time)
+        values (#{userId}, #{bname}, #{auth}, #{total}, #{createTime}, #{updateTime})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update cgcl.album
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="bname != null and bname != ''">
+                bname = #{bname},
+            </if>
+            <if test="auth != null">
+                auth = #{auth},
+            </if>
+            <if test="total != null">
+                total = #{total},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        update cgcl.album set deleted = 1
+        where id = #{id}
+    </delete>
+
+    <select id="getAll" resultMap="AlbumMap">
+        select
+          id, user_id, bname, auth, total, create_time, update_time,deleted
+        from cgcl.album
+        where deleted = 0 and user_id= #{userId} and auth = 0
+    </select>
+
+    <select id="getMine" resultMap="AlbumMap">
+        select
+          id, user_id, bname, auth, total, create_time, update_time,deleted
+        from cgcl.album
+        where deleted = 0 and user_id= #{userId}
+    </select>
+
+</mapper>
