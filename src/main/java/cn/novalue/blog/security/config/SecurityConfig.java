@@ -91,12 +91,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS)
+                .antMatchers(HttpMethod.OPTIONS, "/", "/common/**", "/druid/**")
                 .permitAll()
-                .and()
-                .authorizeRequests()
-                .antMatchers("/", "/common/**", "/druid/**")
-                .permitAll()
+                .anyRequest()
+                .authenticated()
                 .and()
                 .cors();
 
