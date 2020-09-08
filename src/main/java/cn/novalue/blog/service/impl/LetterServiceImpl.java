@@ -47,8 +47,9 @@ public class LetterServiceImpl extends ServiceImpl<LetterDao, Letter> implements
         U2uNotify notify = new U2uNotify();
         notify.setType(U2uNotifyType.LETTER.name());
         notify.setTargetId(receiver);
+        notify.setReceiver(receiver);
         notify.setTargetType("user");
-        notify.setMessage(letter.getContent().substring(0, 256));
+        notify.setMessage(letter.getContent());
         eventPublisher.publishEvent(new U2uNotifyEvent(notify, currentUser));
     }
 

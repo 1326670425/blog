@@ -3,10 +3,9 @@ package cn.novalue.blog.model.entity;
 import java.time.LocalDateTime;
 
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 
 @Data
 @TableName("letter")
@@ -14,7 +13,7 @@ public class Letter implements Serializable {
     private static final long serialVersionUID = 1L;
     // 自增主键    
     @TableField("id")
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Long id;
     // 发送者id    
     @TableField("sender")
@@ -26,9 +25,9 @@ public class Letter implements Serializable {
     @TableField("content")
     private String content;
     // 创建时间    
-    @TableField("create_time")
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
-    // 逻辑删除    
+    // 逻辑删除
     @TableField("deleted")
-    private Object deleted;
+    private Integer deleted;
 }
